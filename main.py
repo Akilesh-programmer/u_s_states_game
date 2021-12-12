@@ -41,38 +41,40 @@ while game_is_on:
     user_input = screen.textinput(title=f"{correct_answers}/50    States correct", prompt="What's another state's name?")
     
     # Lowering the input.
-    l_user_input = user_input.lower()
+    user_input = user_input.title()
+    if user_input == "Exit":
+        break
 
     # Checking if the user guessed any answer correct with the help of a for loop.
     for state in states:
-        # Lowering the state name also in the list.
-        l_state = state.lower()
-
         # checking if correct.
-        if l_state not in guessed_answers:
-            if l_user_input == l_state:
+        if state not in guessed_answers:
+            if user_input == state:
                 correct_answers += 1
-                guessed_answers.append(l_state)
+                guessed_answers.append(state)
+                
                 
                 # Getting the position of the state in the states list so that we can get the x and y coordinates easily.
                 index = states.index(state)
                 current_x = x[index]
                 current_y = y[index]
                 turtle.goto(current_x, current_y)
+                
 
                 # Writing the state name in the map.
                 turtle.write(state, move=True, align='left', font=('Courier', 8, 'normal'))
                 
-                
-            
 
-            
+for answer in guessed_answers:
+    states.remove(answer)
+
+data_dict = {
+    "States": states
+}
+csv_data = pandas.DataFrame(data_dict)
+csv_data.to_csv("states_to_learn.csv")
             
     
             
             
 
-
-
-# With the below method the screen will only turn off after our clicking on it.
-screen.exitonclick()
